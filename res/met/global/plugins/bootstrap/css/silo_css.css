@@ -1,0 +1,108 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 24, 2018, 5:29:01 AM
+    Author     : LT144
+*/
+
+.rawmixStats {max-height:340px;overflow: scroll;}
+.bgCover {background:url(../images/nd/bw_bg_1000.png) no-repeat center center / cover; overflow:hidden; }
+.bgPlant { width:820px !important; text-align:center; margin: 0 auto !important; }
+.funelDiv{ width:auto; height:auto; margin:auto; position:relative; z-index:0; overflow-horizontal:scroll;}
+.belt{ margin-top:-42px;margin-left:2px; position:relative; }
+.siloDiv{ width:80px; height:134px; margin-top:100px;margin-left:2%px;float:left; }
+
+.clear{ font-size:0; line-height:0; clear:both; }
+.botPipe {top: 285px !important;z-index:10;background: url(../images/nd/part/pipebg.png) repeat-x; width:95%;height:20px;position:absolute; }
+.botButtons {margin-top:45px !important;}
+.topButtons {margin-top:-80px !important;}
+.flow{ margin-top: 135px;margin-left:23px; position:relative;z-index:10;  }
+.fname{ 
+	width:80px; font:italic 16px Georgia, "Times New Roman", Times, serif; color:#43514b; 
+	text-align:center !important; position:relative !important; margin:-40px 0 0 -2px !important; 
+}
+.siloMat { width:44px; position:relative !important; bottom:44px; margin:0 auto !important; z-index:0; 
+	height:57px;top: 92px;
+}
+@media screen and (max-width: 1650px){
+    .siloDiv {
+        margin-left:1.8% !important;
+		width:80px !important;
+	}
+	.slioMat {
+		margin-left:8px !important;
+	}
+	.bgPlant { width:615px !important; margin: 0 auto !important; }
+}
+@media screen and (max-width: 1330px){
+	.bgPlant { width:600px !important; }
+    .siloDiv {
+        margin-left:8px !important;
+		width:60px !important;
+	}
+	.slioMat {
+		margin-left:8px !important;
+	}
+	.fname {
+		font-size:12px !important;
+		width:60px !important;
+	}
+	.flow {
+		margin-left:12px !important;
+	}
+	.belt{
+		margin-left:-20px !important; 
+	}
+}
+
+.float-right {
+	float:right !important;
+}
+
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success {
+	background: #4caf50;
+}
+
+.quick-nav {
+    position: fixed;
+    z-index: 10103;
+    top: 5%;
+    right: 10px;
+    margin-top: -20px;
+    pointer-events: none;	
+}
+
+.quick-nav .quick-nav-bg {
+	background: #4caf50;
+}
+
+
+ .text1 {
+	float:left; margin:0 0 0 -16px; 
+	position:absolute; z-index:10; 
+	top:10px !important; 
+}
+
+
+.text11 {
+	float:left; margin:0 0 0 -16px; 
+	position:absolute; z-index:10; 
+	top:54px !important;
+}
+
+.mt-element-ribbon .ribbon{
+	padding: 0.2em  !important;
+	font-size: 12px;
+	font-weight: bold;
+	height:1.8em;	
+}
+
+.mt-element-ribbon .ribbon.ribbon-clip {
+    left: -9px;
+}
+.mt-element-ribbon .ribbon.ribbon-clip.ribbon-right{
+	right: -9px;
+}

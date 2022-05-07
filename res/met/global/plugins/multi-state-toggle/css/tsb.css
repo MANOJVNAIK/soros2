@@ -1,0 +1,26 @@
+
+.tsb-casing {
+  background-color: #4CD964;
+  border-color: #ECF0F1;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  width: 1em;
+  border-radius: 10px;
+  position: relative;
+}
+
+.tsb-state {
+  width: 20px;
+  height: 1em;
+  position: absolute;
+}
+
+.tsb-ball {
+  background-color: #fff;
+  width: 1em;
+  height: 1em;
+  border-radius: 1em;
+  position: absolute;
+  vertical-align: central;
+  left: 0px;
+}

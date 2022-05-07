@@ -1,0 +1,112 @@
+
+.float-left{
+    
+    float: left;
+}
+
+.extrasm{
+    width:72px ! important;
+}
+.Alerts{
+    
+    min-height: 200px;
+    background: url('../../../images/gadgets/Alert.jpg');
+    
+    
+}
+.Charts{
+    
+    min-height: 200px;
+    background: url('../../../images/gadgets/Charts.png');
+}
+
+.IdiotLights{
+    
+    
+    min-height: 200px;
+    background: url('../../../images/gadgets/IdiotLights.png') no-repeat;
+    background-size: 65%;
+    background: 
+}
+
+.Live_status{
+  
+    min-height: 200px;  
+    background: url('../../../images/gadgets/Live_status.png');   
+}
+
+.System_Messages{
+    
+    min-height: 200px;
+    background: url('../../../images/gadgets/System_Messages.png'); 
+    
+}
+.SystemAlert{
+    min-height: 375px;
+    background: url('../../../images/gadgets/SystemAlert.png'); 
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+    
+    
+}
+
+.add-layout-modal{
+    
+    width:50% ! important;
+}
+
+
+.SetPoints{
+    min-height: 375px;
+    
+    background: url('../../../images/gadgets/SetPoints.png'); 
+      background-repeat: no-repeat;
+    
+    
+}
+
+
+.Silos{
+    min-height: 375px;
+    background: url('../../../images/gadgets/Silos.png'); 
+      background-repeat: no-repeat;
+    
+    
+}
+
+.RawmixRun{
+    min-height: 200px;
+    background: url('../../../images/gadgets/RawmixRun.png'); 
+    
+    
+}
+
+ .ele-error{
+        color: red ! important;
+        /*font-weight: bold;*/
+        /*font-size: 1.2em;*/
+    }
+
+    .hide{
+        display:none ! important;
+    }
+    div.timeslider-container{
+        top:30px;
+    }
+    .margin-bottom-20{
+        margin-bottom: 20px;
+    }
+    .padding-5{
+        padding: 5px;
+    }
+    .text-center{
+        text-align: center;
+    }
+    .text-red{
+        color:red
+    }
+   
+table.comparePage th, table.comparePage td {
+font-size: 12px !important;
+}

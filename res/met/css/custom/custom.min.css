@@ -1,0 +1,9 @@
+
+.float-left{
+    
+    float: left;
+}
+
+.clearfix{
+    float:none ! important;
+}

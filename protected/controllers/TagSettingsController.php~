@@ -1,0 +1,189 @@
+<?php
+
+class TagSettingsController extends BaseController {
+
+//    	public $layout='//layouts/column';
+
+    public function init() {
+        $pathinfo = pathinfo(Yii::app()->request->scriptFile);
+        $uploaddir = $pathinfo['dirname'] . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR;
+        require($uploaddir . 'defines.php');
+    }
+
+    public function actionIndex() {
+
+        $this->render('tag-dash');
+    }
+
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate() {
+        $model = new TagQueued;
+
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+
+        if (isset($_POST['TagQueued'])) {
+
+            $model->attributes = $_POST['TagQueued'];
+
+            $startDate = $_POST['TagQueued_startDate'];
+            $endDate = $_POST['TagQueued_endDate'];
+            $startTime = $_POST['TagQueued_startTime'];
+            $endTime = $_POST['TagQueued_endTime'];
+
+            $localendTime = date('Y-m-d H:i:s', strtotime($endDate . " " . $endTime));
+            $localstartTime = date('Y-m-d H:i:s', strtotime($startDate . " " . $startTime));
+
+            $model->LocalendTime = $localendTime;
+            $model->LocalstartTime = $localstartTime;
+            $model->status = 'queued';
+
+            $model->rtaMasterID = 15; // By default 15  i.e analysis_A1_A2_Blend 
+            if ($model->save()) {
+                
+                  //Modify here to get the rm_settings updated and map it with the tagName (Is TagName Unique ?)
+                  //When the tag Is completed we will have to port the completedTagId to the mapping.
+
+                  $cfg = new ConfigFile();
+                  $calAdjust = CAL_ADJUST_FILE;
+                  $cfg->load($calAdjust);
+                  $cfg->setPath("/STDCAL");
+                  $calibFile = $cfg->readEntry("std_display_list");
+
+                  $tagCalibModel = new TagCalibMap();
+                  $tagCalibModel->cal_name = $calibFile;
+                  $tagCalibModel->tag_id = $model->tagID;
+                  $tagCalibModel->tag_name = $model->tagName;
+                  $tagCalibModel->tag_startDate = $model->LocalstartTime;
+                  $tagCalibModel->tag_updated = date("Y-m-d H:i:s");
+                  
+                  $tagCalibModel->save();
+                  RmSettings::setValueByKey('CAL_PROFILE_ACTIVE', $calibFile);
+                $this->redirect(array('index'));
+            }//save
+        } else {
+
+            $model->rtaMasterID = 15; // By default 15  i.e analysis_A1_A2_Blend 
+        }
+
+	echo "debg";
+	die();
+        $this->render('create', array(
+            'model' => $model,
+        ));
+    }
+
+    public function actionSearch() {
+
+
+        $defaultTagGroupID = TagGroup::getDefaultTagGroupID();
+
+        if (isset($_POST)) {
+
+            $tagGroupId = isset($_POST['tagGroup_tagGroupID']) ? $_POST['tagGroup_tagGroupID'] : $defaultTagGroupID;
+
+            $tagGroupObject = TagGroup::model()->find('tagGroupID = :tgID', array(':tgID' => $tagGroupId));
+        } else {
+            $tagGroupObject = TagGroup::model()->find('tagGroupID = :tgID', array(':tgID' => $defaultTagGroupID));
+        }
+
+        $this->render('tag-dash', array('tagGroupObject' => $tagGroupObject));
+    }
+    public function actionTagView($id, $type) {
+
+
+        $tagObject = $this->getObject($id, $type);
+        $this->render('tag-view', array('tagObject' => $tagObject));
+    }
+
+    public function actionTagGroupView($tgID) {
+
+
+        $tagGroupObject = TagGroup::model()->find('tagGroupID = :tgID', array(':tgID' => $tgID));
+        $this->render('tag-group', array('tagGroupObject' => $tagGroupObject));
+    }
+
+    /**
+     * 
+     * @param int $id
+     * @param String $tagType
+     * @return TagCompleted | TagQueued
+     * 
+     */
+    public function getObject($id, $tagType) {
+
+
+
+        if ($tagType == 'completed') {
+
+            $tagObject = TagCompleted::model()->find('tagID  = :tagID', array(':tagID' => $id));
+        } else {
+
+            $tagObject = TagQueued::model()->find('tagID  = :tagID', array(':tagID' => $id));
+        }
+
+
+        return $tagObject;
+    }
+
+    public function actionDeleteTagCompleted($id) {
+
+        TagCompleted::model()->deleteByPk($id);
+
+        $this->redirect(array(index));
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id) {
+        $model = $this->loadModel($id);
+
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+
+        if (isset($_POST['TagQueued'])) {
+            $model->attributes = $_POST['TagQueued'];
+            if ($model->save())
+                $this->redirect(array('view', 'id' => $model->tagID));
+        }
+
+        $this->render('update', array(
+            'model' => $model,
+        ));
+    }
+
+    public function actionDeleteTagQueued($id) {
+
+        TagQueued::model()->deleteByPk($id);
+
+        $this->redirect(array(index));
+    }
+
+    public function actionDeleteTagGroup($id) {
+
+        TagGroup::model()->deleteByPk($id);
+
+        $this->redirect(array(index));
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer $id the ID of the model to be loaded
+     * @return TagQueued the loaded model
+     * @throws CHttpException
+     */
+    public function loadModel($id) {
+        $model = TagQueued::model()->findByPk($id);
+        if ($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
+
+}

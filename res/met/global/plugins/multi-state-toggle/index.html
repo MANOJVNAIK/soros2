@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>jQuery SwitchStateButton Plugin Demos</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/tsb.css"/>
+        <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+        <style>
+        body { background-color:#222; color:#fff;}
+        .container { margin:150px auto; max-width:400px;}
+         .container ul,  .container li { margin:; padding:0; list-style:none; margin-left:10px;}
+            .bouton{
+                display:inline-block;
+                vertical-align: top;
+                margin:20px;
+            }
+        </style>
+    </head>
+    <body>
+    <div id="jquery-script-menu">
+<div class="jquery-script-center">
+<ul>
+<li><a href="http://www.jqueryscript.net/other/Multi-state-Toggle-Switch-Plugin-with-jQuery-SwitchStateButton.html">Download This Plugin</a></li>
+<li><a href="http://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+</ul>
+<div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+    <div class="container">
+        <h1>jQuery SwitchStateButton Plugin Demos</h1>
+        <div id="bouton1" class="bouton"></div>
+        <div id="bouton2" class="bouton"></div>
+        <div id="bouton3" class="bouton"></div>
+        <ul>
+            <li id="dispstate1">Button 1: state 1</li>
+            <li id="dispstate2">Button 2: state 4</li>
+            <li id="dispstate3">Button 3: state 0</li>
+        </ul>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type ="text/javascript" src="js/tsb.js"></script>
+        <script type="text/javascript">
+
+            function stateChanged(state, source) {
+                var nb = $(source).attr("id").substring(6);
+                var dispid = "#dispstate" + nb;
+                $(dispid).text("Button " + nb + ": state " + state);
+            }
+
+            $("#bouton1").threestatebutton({
+                statecount: 3,
+                state: 1,
+                stateChanged: stateChanged
+            });
+            $("#bouton2").threestatebutton({
+                statecount: 5,
+                state: 4,
+                stateChanged: stateChanged
+            });
+            $("#bouton3").threestatebutton({
+                statecount: 2,
+                state: 0,
+                stateChanged: stateChanged
+            });
+        </script>
+        </div>
+    </body>
+</html>
