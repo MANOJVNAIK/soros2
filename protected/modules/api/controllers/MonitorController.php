@@ -1,6 +1,6 @@
 <?php
 
-class RtaTagIndexQueuedController extends BaseController
+class MonitorController extends BaseController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -8,42 +8,6 @@ class RtaTagIndexQueuedController extends BaseController
 	 */
 	public $layout='//layouts/column2';
 
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
 
 	/**
 	 * Displays a particular model.
@@ -53,6 +17,7 @@ class RtaTagIndexQueuedController extends BaseController
 	{
 		$result = $this->loadModel($id);
 		$this->sendSuccessResponse(array($result));
+
 	}
 
 	/**
@@ -60,30 +25,22 @@ class RtaTagIndexQueuedController extends BaseController
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
-	{
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
+	{	
+		
 		$columnData = $this->request;
 		
-		$model=new RtaTagIndexQueued;
+		$model=new MonitorColumns;
 
-		$model->rtaMasterID = $columnData['rtaMasterID'];
-		$model->status = $columnData['status'];
-		$model->tagName = $columnData['tagName'];
-		$model->tagGroupID = $columnData['tagGroupID'];
-		$model->LocalstartTime = $columnData['LocalstartTime'];
-		$model->LocalendTime = $columnData['LocalendTime'];
-		
+		$model->type = $columnData['type'];
+		$model->value = $columnData['value'];
 		
 		if($model->save()){
 			$this->sendSuccessResponse(array('message'=>'Created Succesfully'));
 		}else{
-			var_dump($model->errors);
-		die();
+			
 			$this->sendFailedResponse(array('message'=>'Not Created'));
 		}
+		
 	}
 
 	/**
@@ -92,25 +49,20 @@ class RtaTagIndexQueuedController extends BaseController
 	 * @param integer $id the ID of the model to be updated
 	 */
 	public function actionUpdate($id)
-	{	$columnData = $this->request;
+	{
+		$columnData = $this->request;
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		$model->rtaMasterID = $columnData['rtaMasterID'];
-		$model->status = $columnData['status'];
-		$model->tagName = $columnData['tagName'];
-		$model->tagGroupID = $columnData['tagGroupID'];
-		$model->LocalstartTime = $columnData['LocalstartTime'];
-		$model->LocalendTime = $columnData['LocalendTime'];
-		
+		$model->type = $columnData['type'];
+		$model->value = $columnData['value'];
 		
 		if($model->save()){
 			$this->sendSuccessResponse(array('message'=>'Updated Succesfully'));
 		}else{
-			var_dump($model->errors);
-		
+			
 			$this->sendFailedResponse(array('message'=>'Not Updated'));
 		}
 	}
@@ -124,6 +76,7 @@ class RtaTagIndexQueuedController extends BaseController
 	{
 		$this->loadModel($id)->delete();
 
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		$this->sendSuccessResponse(array('message'=>'Deleted successfully'));
 
 	}
@@ -131,24 +84,36 @@ class RtaTagIndexQueuedController extends BaseController
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionColumns()
 	{
+		
 		$result = Yii::app()->db->createCommand()
 		->select()
-		->from('rta_tag_index_queued')
+		->from('monitor_columns')
+		->queryAll();
+		$this->sendSuccessResponse(array('data'=>$result));
+	}
+        
+        public function actionDropdowns()
+	{
+		
+		$result = Yii::app()->db->createCommand()
+		->select()
+		->from('monitor_columns_dropdown')
 		->queryAll();
 		$this->sendSuccessResponse(array('data'=>$result));
 	}
 
+        
 	/**
 	 * Manages all models.
 	 */
 	public function actionAdmin()
 	{
-		$model=new RtaTagIndexQueued('search');
+		$model=new MonitorColumns('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['RtaTagIndexQueued']))
-			$model->attributes=$_GET['RtaTagIndexQueued'];
+		if(isset($_GET['MonitorColumns']))
+			$model->attributes=$_GET['MonitorColumns'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -159,12 +124,12 @@ class RtaTagIndexQueuedController extends BaseController
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return RtaTagIndexQueued the loaded model
+	 * @return MonitorColumns the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=RtaTagIndexQueued::model()->findByPk($id);
+		$model=MonitorColumns::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -172,11 +137,11 @@ class RtaTagIndexQueuedController extends BaseController
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param RtaTagIndexQueued $model the model to be validated
+	 * @param MonitorColumns $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='rta-tag-index-queued-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='moniter-columns-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

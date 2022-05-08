@@ -1,28 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "node_widget".
+ * This is the model class for table "moniter_columns".
  *
- * The followings are the available columns in table 'node_widget':
- * @property integer $node_widget_id
- * @property integer $node_id
- * @property string $node_item_name
+ * The followings are the available columns in table 'moniter_columns':
+ * @property integer $id
  * @property string $type
- * @property string $settings
- * @property string $created_on
- * @property integer $created_by
- * @property string $updated_on
- * @property integer $updated_by
- * @property integer $position
+ * @property string $value
  */
-class NodeWidget extends CActiveRecord
+class MonitorColumns extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'node_widget';
+		return 'monitor_columns';
 	}
 
 	/**
@@ -33,14 +26,11 @@ class NodeWidget extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('node_id, node_item_name, settings, created_by, updated_by, position', 'required'),
-			array('node_id, created_by, updated_by, position', 'numerical', 'integerOnly'=>true),
-			array('node_item_name, type', 'length', 'max'=>100),
-			array('settings', 'length', 'max'=>500),
-			array('created_on, updated_on', 'safe'),
+			array('type, value', 'required'),
+			array('type, value', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('node_widget_id, node_id, node_item_name, type, settings, created_on, created_by, updated_on, updated_by, position', 'safe', 'on'=>'search'),
+			array('id, type, value', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,16 +51,9 @@ class NodeWidget extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'node_widget_id' => 'Node Widget',
-			'node_id' => 'Node',
-			'node_item_name' => 'Node Item Name',
+			'id' => 'ID',
 			'type' => 'Type',
-			'settings' => 'Settings',
-			'created_on' => 'Created On',
-			'created_by' => 'Created By',
-			'updated_on' => 'Updated On',
-			'updated_by' => 'Updated By',
-			'position' => 'Position',
+			'value' => 'Value',
 		);
 	}
 
@@ -92,16 +75,9 @@ class NodeWidget extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('node_widget_id',$this->node_widget_id);
-		$criteria->compare('node_id',$this->node_id);
-		$criteria->compare('node_item_name',$this->node_item_name,true);
+		$criteria->compare('id',$this->id);
 		$criteria->compare('type',$this->type,true);
-		$criteria->compare('settings',$this->settings,true);
-		$criteria->compare('created_on',$this->created_on,true);
-		$criteria->compare('created_by',$this->created_by);
-		$criteria->compare('updated_on',$this->updated_on,true);
-		$criteria->compare('updated_by',$this->updated_by);
-		$criteria->compare('position',$this->position);
+		$criteria->compare('value',$this->value,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -112,7 +88,7 @@ class NodeWidget extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return NodeWidget the static model class
+	 * @return MonitorColumns the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

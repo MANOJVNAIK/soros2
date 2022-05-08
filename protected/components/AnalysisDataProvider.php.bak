@@ -132,7 +132,10 @@ class AnalysisDataProvider {
             } else {
                 $row = $rawData;
             }
+
+
             foreach (explode(',', $elements) as $ele) {
+
 
                 $tAl2O3 = (float) $row['Al2O3'];
 
@@ -141,6 +144,7 @@ class AnalysisDataProvider {
                 $tFe2O3 = (float) $row['Fe2O3'];
 
                 $tCaO = (float) $row['CaO'];
+
 
                 //Calculate formulas
                 if ($ele == 'LocalstartTime') {
@@ -233,13 +237,14 @@ class AnalysisDataProvider {
                 $eleAvg[$ele] = '-';
             }
         }
+
+//        var_dump($eleAvg);
+//        die();
         return $eleAvg;
     }
 
     public static function queryAvg($elements, $LocalstartTime, $LocalendTime) {
-        $query = "select varValue from rm_settings where varKey = 'MINIMUM_TPH'";
-        $minTPH = (int) Yii::app()->db->createCommand($query)->queryScalar();
-        
+
         foreach ($elements as $ele) {
 
             if ($ele == "totalTons") {
@@ -248,14 +253,12 @@ class AnalysisDataProvider {
                 $avgCol[] = "round(avg($ele) , 3) as $ele";
             }
         }
-        $colQuery   = implode(' , ', $avgCol);
-        $startTime  = $LocalstartTime; //"2021-07-15 04:13:47"; 
-        $endTime    = $LocalendTime; //"2021-07-15 05:13:47";
-        $whereQuery = "where LocalendTime >= '{$startTime}' AND  LocalendTime <= '{$endTime}' AND totalTons > 0 AND TPH > $minTPH ";
+        $colQuery = implode(' , ', $avgCol);
+        $startTime = $LocalstartTime; //"2021-07-15 04:13:47"; 
+        $endTime = $LocalendTime; //"2021-07-15 05:13:47";
+        $whereQuery = "where LocalendTime >= '{$startTime}' AND  LocalendTime <= '{$endTime}'";
 
         $sql = "select min(LocalendTime) as LocalStartTime, max(LocalendTime) as LocalendTime, $colQuery from analysis_A1_A2_Blend " . $whereQuery;
-//        echo $sql;
-//        die();
         $results = Yii::app()->db->createCommand($sql)->queryRow();
 
 
@@ -266,6 +269,7 @@ class AnalysisDataProvider {
 
         $this->logTime(21);
         $startDate = $tagObject->LocalstartTime;
+
         $endTime = $tagObject->LocalendTime;
 
         $rmsquery = "select * from rm_settings where varKey = 'SOROS_DISPLAY_ELEMENTS' ";
@@ -284,14 +288,17 @@ class AnalysisDataProvider {
         } else {
 
             $interval = new IntervalObject();
+
             $interval->setStartTime($startDate);
             $interval->setEndTime($endTime);
             //setStartTime
             //setEndTime
             $analysisDataProvider = new AnalysisDataProvider();
             $analysisDataProvider->setElements($showCaseElements);
+
             $avg = $analysisDataProvider->getIntervalAvg($interval);
         }
+
         $avg['LocalstartTime'] = $startDate;
         $avg['End-Time'] = $endTime;
         

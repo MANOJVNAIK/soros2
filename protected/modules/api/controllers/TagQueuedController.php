@@ -1,6 +1,6 @@
 <?php
 
-class MoniterColumnsController extends BaseController
+class TagQueuedController extends BaseController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -53,7 +53,6 @@ class MoniterColumnsController extends BaseController
 	{
 		$result = $this->loadModel($id);
 		$this->sendSuccessResponse(array($result));
-
 	}
 
 	/**
@@ -61,22 +60,30 @@ class MoniterColumnsController extends BaseController
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
-	{	
-		
+	{
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
 		$columnData = $this->request;
 		
-		$model=new MoniterColumns;
+		$model=new RtaTagIndexQueued;
 
-		$model->type = $columnData['type'];
-		$model->value = $columnData['value'];
+		$model->rtaMasterID = $columnData['rtaMasterID'];
+		$model->status = $columnData['status'];
+		$model->tagName = $columnData['tagName'];
+		$model->tagGroupID = $columnData['tagGroupID'];
+		$model->LocalstartTime = $columnData['LocalstartTime'];
+		$model->LocalendTime = $columnData['LocalendTime'];
+		
 		
 		if($model->save()){
 			$this->sendSuccessResponse(array('message'=>'Created Succesfully'));
 		}else{
-			
+			var_dump($model->errors);
+		die();
 			$this->sendFailedResponse(array('message'=>'Not Created'));
 		}
-		
 	}
 
 	/**
@@ -85,20 +92,25 @@ class MoniterColumnsController extends BaseController
 	 * @param integer $id the ID of the model to be updated
 	 */
 	public function actionUpdate($id)
-	{
-		$columnData = $this->request;
+	{	$columnData = $this->request;
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		$model->type = $columnData['type'];
-		$model->value = $columnData['value'];
+		$model->rtaMasterID = $columnData['rtaMasterID'];
+		$model->status = $columnData['status'];
+		$model->tagName = $columnData['tagName'];
+		$model->tagGroupID = $columnData['tagGroupID'];
+		$model->LocalstartTime = $columnData['LocalstartTime'];
+		$model->LocalendTime = $columnData['LocalendTime'];
+		
 		
 		if($model->save()){
 			$this->sendSuccessResponse(array('message'=>'Updated Succesfully'));
 		}else{
-			
+			var_dump($model->errors);
+		
 			$this->sendFailedResponse(array('message'=>'Not Updated'));
 		}
 	}
@@ -112,7 +124,6 @@ class MoniterColumnsController extends BaseController
 	{
 		$this->loadModel($id)->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		$this->sendSuccessResponse(array('message'=>'Deleted successfully'));
 
 	}
@@ -122,10 +133,9 @@ class MoniterColumnsController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		
 		$result = Yii::app()->db->createCommand()
 		->select()
-		->from('moniter_columns')
+		->from('rta_tag_index_queued')
 		->queryAll();
 		$this->sendSuccessResponse(array('data'=>$result));
 	}
@@ -135,10 +145,10 @@ class MoniterColumnsController extends BaseController
 	 */
 	public function actionAdmin()
 	{
-		$model=new MoniterColumns('search');
+		$model=new RtaTagIndexQueued('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['MoniterColumns']))
-			$model->attributes=$_GET['MoniterColumns'];
+		if(isset($_GET['RtaTagIndexQueued']))
+			$model->attributes=$_GET['RtaTagIndexQueued'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -149,12 +159,12 @@ class MoniterColumnsController extends BaseController
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return MoniterColumns the loaded model
+	 * @return RtaTagIndexQueued the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=MoniterColumns::model()->findByPk($id);
+		$model=RtaTagIndexQueued::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -162,11 +172,11 @@ class MoniterColumnsController extends BaseController
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param MoniterColumns $model the model to be validated
+	 * @param RtaTagIndexQueued $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='moniter-columns-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='rta-tag-index-queued-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
